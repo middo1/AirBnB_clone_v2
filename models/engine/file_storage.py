@@ -25,11 +25,12 @@ class FileStorage:
         new_all = {}
         if cls:
             if cls.__name__ in self.classes:
-                for k, v in self.__objects.items():
+                for k, v in FileStorage.__objects.items():
                     if cls.__name__ == k.split('.')[0]:
                         new_all.update({k: v})
         else:
             new_all = FileStorage.__objects
+
         return new_all
 
     def new(self, obj):

@@ -25,7 +25,7 @@ class FileStorage:
         new_all = {}
         if cls:
             if cls.__name__ in self.classes:
-                for k, v in FileStorage.__objects.items():
+                for k, v in self.__objects.items():
                     if cls.__name__ == k.split('.')[0]:
                         new_all.update({k: v})
         else:
@@ -60,4 +60,4 @@ class FileStorage:
         if obj:
             k = '{}.{}'.format(type(obj).__name__, obj.id)
             del FileStorage.__objects[k]
-            self.save()
+            # self.save()

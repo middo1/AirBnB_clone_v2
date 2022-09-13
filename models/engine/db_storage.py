@@ -9,11 +9,18 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from sqlalchemy import (create_engine)
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 
-
+classes = {
+    'User': User,
+    'State': State,
+    'City': City,
+    'Amenity': Amenity,
+    'Place': Place,
+    'Review': Review
+}
 class DBStorage:
 
     '''
@@ -38,8 +45,8 @@ class DBStorage:
         if env == 'test':
             Base.metadata.drop_all(self.__engine)
 
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
+        # Session = sessionmaker(bind=self.__engine)
+        # self.__session = Session()
 
     def all(self, cls=None):
         '''returns dictionary representation of database
@@ -48,24 +55,31 @@ class DBStorage:
         result = {}
         if cls:
             for obj in self.__session.query(eval(cls)).all():
+                print('cahi',obj)
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 result[key] = obj
         else:
+            print('Okay')
             for sub_c in Base.__subclasses__():
+                print(sub_c)
+                print(self.__session)
                 table = self.__session.query(sub_c).all()
+                print(table)
                 for obj in table:
+                    print('omo')
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     result[key] = obj
-        return(result)
+        return result
 
     def new(self, obj):
         if obj:
-            try:
-                self.__session.add(obj)
+            self.__session.add(obj)
 
     def delete(self, obj=None):
         if obj:
-            self.__session.delete(obj)
+            class_name = classes[type(obj).__name__]
+            self.__session.query(class_name).\
+                filter(class_name.id == obj.id).delete()
 
     def save(self):
         self.__session.commit()
@@ -75,9 +89,9 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
-        Session = scoped_session(session_factory)
-        self.__session = Session()
+        # Session = scoped_session(session_factory)
+        self.__session = scoped_session(session_factory)
 
     def close(self):
         '''closes session'''
-        self.__session.close()
+        self.__session.remove()

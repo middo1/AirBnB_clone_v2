@@ -2,13 +2,11 @@
 '''
     This module defines the BaseModel class
 '''
-from sqlalchemy import Integer, String, Column, DateTime
-from sqlalchemy.ext.declarative import declarative_base
 import uuid
 from datetime import datetime
 import models
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
 
 
 Base = declarative_base()
@@ -53,6 +51,7 @@ class BaseModel:
         '''
             Return string representation of BaseModel class
         '''
+        models.storage.reload()
         return ("[{}] ({}) {}".format(self.__class__.__name__,
                                       self.id, self.__dict__))
 
@@ -60,8 +59,7 @@ class BaseModel:
         '''
             Return string representation of BaseModel class
         '''
-        return ("[{}] ({}) {}".format(self.__class__.__name__,
-                                      self.id, self.__dict__))
+        return self.__str__()
 
     def save(self):
         '''
@@ -77,7 +75,7 @@ class BaseModel:
         '''
         cp_dct = dict(self.__dict__)
         if '_sa_instance_state' in cp_dct:
-            cp_dct.__delitem__('_sa_instance_state')
+            del cp_dct['_sa_instance_state']
         cp_dct['__class__'] = self.__class__.__name__
         cp_dct['updated_at'] = self.updated_at.strftime("%Y-%m-%dT%H:%M:%S.%f")
         cp_dct['created_at'] = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%f")

@@ -140,6 +140,7 @@ class HBNBCommand(cmd.Cmd):
                 except:
                     pass
                 setattr(new_instance, key, val)
+                storage.save()
         else:
             print("** class doesn't exist **")
 
@@ -221,6 +222,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
+        obj = storage.all()
         print_list = []
 
         if args:
@@ -228,12 +230,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k in storage.all():
                 if k.split('.')[0] == args:
-                    print_list.append(str(v))
+                    print_list.append(obj[k])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            for k in storage.all():
+                print_list.append(obj[k])
 
         print(print_list)
 

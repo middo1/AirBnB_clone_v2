@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the file storage class for AirBnB"""
+"""This is the file storage class for the AirBnB"""
 import json
 from models.base_model import BaseModel
 from models.user import User
@@ -83,3 +83,4 @@ class FileStorage:
             # format key from obj
             key = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[key]
+        self.save()

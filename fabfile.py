@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Compress web static package
 """
-from fabric.api import *
+from fabric import api
 from datetime import datetime
 from os import path
 

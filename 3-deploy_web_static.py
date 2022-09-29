@@ -8,7 +8,7 @@ from os import path
 
 env.hosts = ['34.239.158.227', '3.236.24.153']
 env.user = 'ubuntu'
-env.key_filename = '~/codes/alx-system_engineering-devops/0x04-loops_conditions_and_parsing/0-RSA_public_key'
+env.key_filename = '~/.ssh/school'
 
 
 

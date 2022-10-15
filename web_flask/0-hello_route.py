@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_flask():
-    """Return string when route queried
+    """Returns a string when route is / queried
     """
     return 'Hello HBNB!'
 

@@ -42,7 +42,6 @@ def hello_num(n=None):
     return str(n) + ' is a number'
 
 
-
 @app.route('/number_template/<int:n>')
 def number_template(n):
     """Retrieve template for request
